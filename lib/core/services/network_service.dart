@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:sample_project/core/core.dart';
-import 'package:sample_project/core/helpers/token_helper.dart';
-import 'package:sample_project/features/login/data/models/token_model.dart';
+import 'package:sample_project/features/login/data/data.dart';
 
 class NetworkService {
   NetworkService._() {
