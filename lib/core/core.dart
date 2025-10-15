@@ -2,6 +2,7 @@
 export './constants/api_end_point.dart';
 export './constants/app_constant.dart';
 export './constants/app_exception.dart';
+export './constants/app_size.dart';
 export './extensions/build_context_extension.dart';
 export './helpers/token_helper.dart';
 export './router/app_router.dart';

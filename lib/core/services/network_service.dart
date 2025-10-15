@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/data/data.dart';
+import 'package:sample_project/features/login/data/models/mapping/token_entity_mapping.dart';
 
 class NetworkService {
   NetworkService._() {
@@ -71,9 +72,10 @@ class NetworkService {
       if (response.statusCode == 200) {
         final data = response.data;
         final tokenModel = TokenModel.fromJson(data);
+        final tokenEntity = tokenModel.toEntity();
 
-        await setAccessToken(tokenModel.accessToken);
-        await setRefreshToken(tokenModel.refreshToken);
+        await setAccessToken(tokenEntity.accessToken);
+        await setRefreshToken(tokenEntity.refreshToken);
 
         return true;
       } else {

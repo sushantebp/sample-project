@@ -1,5 +1,4 @@
 class ApiEndPoint {
-  static const String refresh = '/refresh';
-  static const String login = '/login';
-  static const String logout = '/logout';
+  static const String refresh = '/auth/refresh';
+  static const String login = '/auth/login';
 }

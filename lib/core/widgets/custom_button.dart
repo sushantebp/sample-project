@@ -8,12 +8,15 @@ class CustomButton extends StatelessWidget {
   final String title;
   final Color? backgroundColor;
   final Color? foregroundColor;
+  final TextStyle? titleStyle;
+
   const CustomButton({
     super.key,
-    required this.onPressed,
     required this.title,
+    required this.onPressed,
     this.backgroundColor,
     this.foregroundColor,
+    this.titleStyle,
   });
 
   @override
@@ -24,7 +27,7 @@ class CustomButton extends StatelessWidget {
         foregroundColor: foregroundColor ?? context.colorScheme.onPrimary,
       ),
       onPressed: onPressed,
-      child: Text(title),
+      child: Text(title, style: titleStyle ?? context.textTheme.titleMedium),
     );
   }
 }

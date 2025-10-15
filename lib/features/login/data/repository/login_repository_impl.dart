@@ -6,7 +6,7 @@ class LoginRepositoryImpl extends LoginRepository {
   final NetworkService _networkService;
   LoginRepositoryImpl(this._networkService);
   @override
-  Future<LoginResponseEntity> login(LoginRequestEntity loginRequest) async {
+  Future<void> login(LoginRequestEntity loginRequest) async {
     try {
       final loginRequestModel = loginRequest.toModel();
       final jsonBody = loginRequestModel.toJson();
@@ -24,7 +24,8 @@ class LoginRepositoryImpl extends LoginRepository {
         final loginResponseModel = LoginResponseModel.fromJson(jsonData);
         final loginResponseEntity = loginResponseModel.toEntity();
 
-        return loginResponseEntity;
+        await setAccessToken(loginResponseEntity.accessToken);
+        await setRefreshToken(loginResponseEntity.refreshToken);
       } else if (statusCode == 400) {
         throw BadRequestException(response.data.toString());
       } else if (statusCode! >= 500) {
