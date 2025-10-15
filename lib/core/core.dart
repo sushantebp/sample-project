@@ -1,6 +1,7 @@
 // core,required for app
 export './constants/api_end_point.dart';
 export './constants/app_constant.dart';
+export './constants/app_image.dart';
 export './constants/app_exception.dart';
 export './constants/app_size.dart';
 export './extensions/build_context_extension.dart';

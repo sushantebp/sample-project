@@ -3,14 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:sample_project/core/core.dart';
 
 @RoutePage()
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const MyAppBar(),
-      body: Center(child: const Text("Splash Screen")),
-    );
+    return Scaffold(appBar: MyAppBar(title: "Main Screen"));
   }
 }
