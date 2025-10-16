@@ -16,4 +16,4 @@ Future<void> setRefreshToken(String value) async =>
     await SecureStorageService().write(AppConstant.refreshTokenKey, value);
 
 Future<void> deleteRefreshToken() async =>
-    await SecureStorageService().delete(AppConstant.accessTokenKey);
+    await SecureStorageService().delete(AppConstant.refreshTokenKey);

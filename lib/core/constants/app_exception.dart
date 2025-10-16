@@ -28,3 +28,7 @@ class NetworkException extends AppException {
     super.message = "Network error. Please check your internet connection",
   ]);
 }
+
+class UserFetchException extends AppException {
+  const UserFetchException([super.message = "Error fetching user details"]);
+}
