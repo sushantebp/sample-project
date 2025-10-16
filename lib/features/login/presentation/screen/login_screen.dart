@@ -12,6 +12,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginBloc = context.read<LoginBloc>();
+    final formKey = GlobalKey<FormState>();
 
     return Scaffold(
       appBar: const MyAppBar(),
@@ -33,41 +34,60 @@ class LoginScreen extends StatelessWidget {
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSize.paddingMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: AppSize.spaceLarge),
-                Text("Login Here", style: context.textTheme.displaySmall),
-                const SizedBox(height: AppSize.spaceSmall),
-                Text(
-                  "Welcome back! You've been missed.",
-                  style: context.textTheme.titleMedium,
-                ),
-                const SizedBox(height: AppSize.spaceLarge * 1.5),
-                CustomTextField(
-                  prefix: const Icon(Icons.person_outline),
-                  placeholder: "Enter your username",
-                  onChanged: (value) =>
-                      loginBloc.add(UserNameChangedEvent(value)),
-                ),
-                const SizedBox(height: AppSize.spaceMedium),
-                CustomTextField(
-                  prefix: const Icon(Icons.lock_outline),
-                  placeholder: "Enter your password",
-                  isPassword: true,
-                  onChanged: (value) =>
-                      loginBloc.add(PasswordChangedEvent(value)),
-                ),
-                const SizedBox(height: AppSize.spaceLarge * 1.5),
-                SizedBox(
-                  width: double.infinity,
-                  height: AppSize.spaceLarge * 2.2,
-                  child: CustomButton(
-                    title: "Login",
-                    onPressed: () => loginBloc.add(const LoginSubmittedEvent()),
+            child: Form(
+              key: formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: AppSize.spaceLarge),
+                  Text("Login Here", style: context.textTheme.displaySmall),
+                  const SizedBox(height: AppSize.spaceSmall),
+                  Text(
+                    "Welcome back! You've been missed.",
+                    style: context.textTheme.titleMedium,
                   ),
-                ),
-              ],
+                  const SizedBox(height: AppSize.spaceLarge * 1.5),
+                  CustomTextField(
+                    prefix: const Icon(Icons.person_outline),
+                    placeholder: "Enter your username",
+                    validator: (value) {
+                      if (value?.isEmpty ?? false) {
+                        return "Username is required";
+                      }
+                      return null;
+                    },
+                    onChanged: (value) =>
+                        loginBloc.add(UserNameChangedEvent(value)),
+                  ),
+                  const SizedBox(height: AppSize.spaceMedium),
+                  CustomTextField(
+                    prefix: const Icon(Icons.lock_outline),
+                    placeholder: "Enter your password",
+                    validator: (value) {
+                      if (value?.isEmpty ?? false) {
+                        return 'Password is required';
+                      }
+                      return null;
+                    },
+                    isPassword: true,
+                    onChanged: (value) =>
+                        loginBloc.add(PasswordChangedEvent(value)),
+                  ),
+                  const SizedBox(height: AppSize.spaceLarge * 1.5),
+                  SizedBox(
+                    width: double.infinity,
+                    height: AppSize.spaceLarge * 2.2,
+                    child: CustomButton(
+                      title: "Login",
+                      onPressed: () {
+                        if (formKey.currentState?.validate() ?? false) {
+                          loginBloc.add(LoginSubmittedEvent());
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
