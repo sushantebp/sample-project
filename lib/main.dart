@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/data/repository/login_repository_impl.dart';
 import 'package:sample_project/features/login/presentation/bloc/login_bloc.dart';
+import 'package:sample_project/features/splash/presentation/presentation.dart';
 
-void main() => runApp(const SampleProjectApp());
+void main() {
+  runApp(const SampleProjectApp());
+}
 
 class SampleProjectApp extends StatelessWidget {
   const SampleProjectApp({super.key});
@@ -15,9 +18,10 @@ class SampleProjectApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) =>
+          create: (context) =>
               LoginBloc(loginRepository: LoginRepositoryImpl(NetworkService())),
         ),
+        BlocProvider(create: (context) => SplashBloc()),
       ],
       child: MaterialApp.router(
         title: AppConstant.appName,
