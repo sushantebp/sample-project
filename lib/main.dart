@@ -33,6 +33,8 @@ class SampleProjectApp extends StatelessWidget {
       ],
       child: ToastificationWrapper(
         child: MaterialApp.router(
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
           title: AppConstant.appName,
           routerConfig: router.config(),
         ),

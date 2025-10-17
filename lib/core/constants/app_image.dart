@@ -1,3 +1,3 @@
 class AppImage {
-  static const String logo = "assets/images/logo.jpg";
+  static const String logo = "assets/images/logo.png";
 }

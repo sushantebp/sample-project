@@ -24,9 +24,9 @@ class LoginScreen extends StatelessWidget {
           if (state.loginStatus == LoginStatus.failed) {
             final message =
                 state.errorMessage ?? "Login failed! Try again later.";
-            Toaster.showError(message: message);
+            Toaster.showError(message);
           } else if (state.loginStatus == LoginStatus.submitted) {
-            Toaster.showSuccess(message: "Login Successful");
+            Toaster.showSuccess("Login Successful");
 
             context.router.replace(const MainRoute());
           }
