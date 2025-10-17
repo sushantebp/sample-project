@@ -18,6 +18,8 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: const MyAppBar(),
       body: BlocListener<ProfileBloc, ProfileState>(
+        listenWhen: (previous, current) =>
+            previous.profileStatus != current.profileStatus,
         listener: (context, state) {
           final status = state.profileStatus;
 

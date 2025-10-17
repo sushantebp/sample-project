@@ -18,6 +18,24 @@ class NetworkService {
     ),
   );
 
+  AppException _handleDioError(DioException error) {
+    final statusCode = error.response?.statusCode ?? 500;
+
+    switch (statusCode) {
+      case 500:
+        return const ServerException();
+      case 400:
+        return const BadRequestException();
+      case 401:
+        return UnauthorizedException();
+      default:
+        final errorMessage =
+            error.response?.data['message'] ??
+            "Unexcepted server error : $statusCode";
+        return UnknownnException(errorMessage);
+    }
+  }
+
   InterceptorsWrapper _authInterceptor() {
     return InterceptorsWrapper(
       onRequest: (options, handler) async {
@@ -35,14 +53,13 @@ class NetworkService {
         handler.next(response);
       },
       onError: (DioException error, handler) async {
-        // Check for 401 Unauthorized error
         if (error.response?.statusCode == 401) {
-          // Try refreshing the token
           final refreshed = await _refreshToken();
+
           if (refreshed) {
-            // Retry the failed request with new access token
             final requestOptions = error.requestOptions;
             final newToken = await getAccessToken();
+
             if (newToken != null) {
               requestOptions.headers['Authorization'] = 'Bearer $newToken';
             }
@@ -54,7 +71,15 @@ class NetworkService {
             }
           }
         }
-        handler.next(error);
+        final customException = _handleDioError(error);
+        return handler.reject(
+          DioException(
+            requestOptions: error.requestOptions,
+            error: customException,
+            type: error.type,
+            response: error.response,
+          ),
+        );
       },
     );
   }

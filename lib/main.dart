@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sample_project/core/core.dart';
+import 'package:toastification/toastification.dart';
 import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/data/data.dart';
 import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/presentation/presentation.dart';
 import 'package:sample_project/features/login/data/repository/login_repository_impl.dart';
@@ -30,9 +31,11 @@ class SampleProjectApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp.router(
-        title: AppConstant.appName,
-        routerConfig: router.config(),
+      child: ToastificationWrapper(
+        child: MaterialApp.router(
+          title: AppConstant.appName,
+          routerConfig: router.config(),
+        ),
       ),
     );
   }
