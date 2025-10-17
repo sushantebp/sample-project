@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/domain/domain.dart';
 
 part 'login_event.dart';
@@ -35,12 +36,33 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         username: state.username,
         password: state.password,
       );
-
       await loginRepository.login(loginRequest);
+      emit(
+        state.copyWith(loginStatus: LoginStatus.submitted, errorMessage: null),
+      );
+    } on AppException catch (e) {
+      String customMessage;
+      if (e is BadRequestException) {
+        customMessage = e.message;
+      } else if (e is ServerException) {
+        customMessage = e.message;
+      } else {
+        customMessage = e.message;
+      }
 
-      emit(state.copyWith(loginStatus: LoginStatus.submitted));
-    } catch (e) {
-      emit(state.copyWith(loginStatus: LoginStatus.failed));
+      emit(
+        state.copyWith(
+          loginStatus: LoginStatus.failed,
+          errorMessage: customMessage,
+        ),
+      );
+    } catch (_) {
+      emit(
+        state.copyWith(
+          loginStatus: LoginStatus.failed,
+          errorMessage: "Unexpected error occurred",
+        ),
+      );
     }
   }
 }

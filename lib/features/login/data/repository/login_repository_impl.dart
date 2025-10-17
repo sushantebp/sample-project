@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/data/data.dart';
 import 'package:sample_project/features/login/domain/domain.dart';
@@ -17,7 +18,6 @@ class LoginRepositoryImpl extends LoginRepository {
       );
 
       final statusCode = response.statusCode;
-
       if (statusCode == 200) {
         final jsonData = response.data;
 
@@ -26,17 +26,14 @@ class LoginRepositoryImpl extends LoginRepository {
 
         await setAccessToken(loginResponseEntity.accessToken);
         await setRefreshToken(loginResponseEntity.refreshToken);
-
-        
-      } else if (statusCode == 400) {
-        throw BadRequestException(response.data.toString());
-      } else if (statusCode! >= 500) {
-        throw ServerException('Server error with status code $statusCode');
-      } else {
-        throw LoginException('Unexpected error with status code $statusCode');
       }
-    } catch (e) {
-      throw LoginException(e.toString());
+    } on DioException catch (e) {
+      final error = e.error;
+      if (error is AppException) {
+        throw error;
+      } else {
+        throw const NetworkException("Unexpected network error");
+      }
     }
   }
 }

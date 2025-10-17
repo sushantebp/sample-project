@@ -16,7 +16,7 @@ class UnauthorizedException extends AppException {
 }
 
 class BadRequestException extends AppException {
-  const BadRequestException([super.message = "Bad request"]);
+  const BadRequestException([super.message = "Invalid credentials"]);
 }
 
 class ServerException extends AppException {
@@ -31,4 +31,9 @@ class NetworkException extends AppException {
 
 class UserFetchException extends AppException {
   const UserFetchException([super.message = "Error fetching user details"]);
+}
+
+
+class UnknownnException extends AppException {
+  const UnknownnException([super.message = "Unexpected error."]);
 }

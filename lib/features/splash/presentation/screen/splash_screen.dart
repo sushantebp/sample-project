@@ -5,18 +5,24 @@ import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/splash/presentation/presentation.dart';
 
 @RoutePage()
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<SplashBloc>().add(const CheckUserAuthEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<SplashBloc>().add(const CheckUserAuthEvent());
-    });
     return Scaffold(
       body: BlocListener<SplashBloc, SplashState>(
-        listenWhen: (previous, current) =>
-            previous.splashStatus != current.splashStatus,
         listener: (context, state) {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             await Future.delayed(const Duration(milliseconds: 3223));

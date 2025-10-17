@@ -8,5 +8,6 @@ abstract class LoginState with _$LoginState {
     @Default("") String username,
     @Default("") String password,
     @Default(LoginStatus.initial) LoginStatus loginStatus,
+    String? errorMessage,
   }) = _LoginState;
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sample_project/core/core.dart';
+import 'package:sample_project/core/helpers/toaster.dart';
 import 'package:sample_project/features/login/presentation/presentation.dart';
 
 @RoutePage()
@@ -17,13 +18,17 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: const MyAppBar(),
       body: BlocConsumer<LoginBloc, LoginState>(
+        listenWhen: (previous, current) =>
+            previous.loginStatus != current.loginStatus,
         listener: (context, state) {
           if (state.loginStatus == LoginStatus.failed) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login failed. Please try again.')),
-            );
+            final message =
+                state.errorMessage ?? "Login failed! Try again later.";
+            Toaster.showError(message: message);
           } else if (state.loginStatus == LoginStatus.submitted) {
-            context.router.replace(const SplashRoute());
+            Toaster.showSuccess(message: "Login Successful");
+
+            context.router.replace(const MainRoute());
           }
         },
         builder: (context, state) {
