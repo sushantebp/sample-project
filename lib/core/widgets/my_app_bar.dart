@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sample_project/core/core.dart';
 
 /// A minimal custom appbar widget
 ///
@@ -11,6 +12,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final Widget? leading;
   final VoidCallback? onBackPressed;
+  final Color? bgColor;
   const MyAppBar({
     super.key,
     this.title,
@@ -19,12 +21,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
     this.leading,
     this.onBackPressed,
+    this.bgColor,
   });
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: bgColor ?? context.colorScheme.surface,
       title: title != null ? Text(title!) : null,
       centerTitle: centerTitle,
       actions: actions,
