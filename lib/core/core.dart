@@ -18,3 +18,5 @@ export './widgets/my_app_bar.dart';
 export './theme/app_theme.dart';
 
 export './constants/app_color.dart';
+
+export './di/service_locator.dart';

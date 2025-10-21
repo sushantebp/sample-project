@@ -34,6 +34,8 @@ class LoginRepositoryImpl extends LoginRepository {
       } else {
         throw const NetworkException("Unexpected network error");
       }
+    } catch (e) {
+      throw Exception("hmm something is wrong");
     }
   }
 }

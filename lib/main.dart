@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:toastification/toastification.dart';
-import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/data/data.dart';
 import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/presentation/presentation.dart';
-import 'package:sample_project/features/login/data/repository/login_repository_impl.dart';
 import 'package:sample_project/features/login/presentation/bloc/login_bloc.dart';
 import 'package:sample_project/features/splash/presentation/presentation.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
   runApp(const SampleProjectApp());
 }
 
@@ -17,26 +17,18 @@ class SampleProjectApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = AppRouter();
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (context) =>
-              LoginBloc(loginRepository: LoginRepositoryImpl(NetworkService())),
-        ),
-        BlocProvider(create: (context) => SplashBloc()),
-        BlocProvider(
-          create: (context) => ProfileBloc(
-            profileRepository: ProfileRepositoryImpl(NetworkService()),
-          ),
-        ),
+        BlocProvider(create: (_) => sl<SplashBloc>()),
+        BlocProvider(create: (_) => sl<ProfileBloc>()),
+        BlocProvider(create: (_) => sl<LoginBloc>()),
       ],
       child: ToastificationWrapper(
         child: MaterialApp.router(
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           title: AppConstant.appName,
-          routerConfig: router.config(),
+          routerConfig: AppRouter.instance.config(),
         ),
       ),
     );
