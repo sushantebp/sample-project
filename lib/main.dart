@@ -8,6 +8,7 @@ import 'package:sample_project/features/splash/presentation/presentation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await PreferencesService.instance.init();
   await configureDependencies();
   runApp(const SampleProjectApp());
 }
@@ -22,13 +23,19 @@ class SampleProjectApp extends StatelessWidget {
         BlocProvider(create: (_) => sl<SplashBloc>()),
         BlocProvider(create: (_) => sl<ProfileBloc>()),
         BlocProvider(create: (_) => sl<LoginBloc>()),
+        BlocProvider(create: (_) => sl<AppThemeModeCubit>()),
       ],
       child: ToastificationWrapper(
-        child: MaterialApp.router(
-          theme: AppTheme.lightTheme,
-          darkTheme: AppTheme.darkTheme,
-          title: AppConstant.appName,
-          routerConfig: AppRouter.instance.config(),
+        child: BlocBuilder<AppThemeModeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return MaterialApp.router(
+              theme: AppTheme.lightTheme,
+              darkTheme: AppTheme.darkTheme,
+              themeMode: themeMode,
+              title: AppConstant.appName,
+              routerConfig: AppRouter.instance.config(),
+            );
+          },
         ),
       ),
     );

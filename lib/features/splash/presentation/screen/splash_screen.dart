@@ -28,12 +28,11 @@ class _SplashScreenState extends State<SplashScreen> {
           WidgetsBinding.instance.addPostFrameCallback((_) async {
             await Future.delayed(const Duration(milliseconds: 3223));
             if (!context.mounted) return;
-            //kjhakHSD
-            // if (state.splashStatus == SplashStatus.authenticated) {
-            //   context.router.replace(const MainRoute());
-            // } else if (state.splashStatus == SplashStatus.unauthenticated) {
-            context.router.replace(const LoginRoute());
-            // }
+            if (state.splashStatus == SplashStatus.authenticated) {
+              context.router.replace(const MainRoute());
+            } else if (state.splashStatus == SplashStatus.unauthenticated) {
+              context.router.replace(const LoginRoute());
+            }
           });
         },
         child: const SplashContent(),
