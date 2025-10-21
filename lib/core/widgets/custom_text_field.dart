@@ -13,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final Widget? suffix;
   final bool isPassword;
   final Function(String)? onChanged;
+  final String? initialValue;
 
   const CustomTextField({
     super.key,
@@ -26,6 +27,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.isPassword = false,
     this.onChanged,
+    this.initialValue,
   });
 
   @override
@@ -78,6 +80,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         }
 
         return TextFormField(
+          initialValue: widget.initialValue,
           controller: widget.controller,
           enabled: widget.enabled,
           validator: widget.validator,

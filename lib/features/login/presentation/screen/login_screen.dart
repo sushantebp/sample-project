@@ -52,6 +52,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSize.spaceLarge * 1.5),
                   CustomTextField(
+                    initialValue: loginBloc.state.username,
                     prefix: const Icon(Icons.person_outline),
                     placeholder: "Enter your username",
                     validator: (value) {

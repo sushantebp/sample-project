@@ -10,4 +10,7 @@ abstract class LoginState with _$LoginState {
     @Default(LoginStatus.initial) LoginStatus loginStatus,
     String? errorMessage,
   }) = _LoginState;
+
+  factory LoginState.fromJson(Map<String, dynamic> json) =>
+      _$LoginStateFromJson(json);
 }

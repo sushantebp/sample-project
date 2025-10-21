@@ -12,11 +12,12 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final profileBloc = context.read<ProfileBloc>();
     final router = context.router;
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       profileBloc.add(FetchUserDetailEvent());
     });
     return Scaffold(
-      appBar: const MyAppBar(),
+      appBar: const MyAppBar(actions: [SelectAppThemeMode()]),
       body: BlocListener<ProfileBloc, ProfileState>(
         listenWhen: (previous, current) =>
             previous.profileStatus != current.profileStatus,

@@ -1,5 +1,5 @@
-import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/domain/domain.dart';
 
@@ -7,8 +7,9 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 part 'login_bloc.freezed.dart';
+part 'login_bloc.g.dart';
 
-class LoginBloc extends Bloc<LoginEvent, LoginState> {
+class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   final LoginRepository loginRepository;
   LoginBloc({required this.loginRepository}) : super(const LoginState()) {
     on<UserNameChangedEvent>(_onUserNameChanged);
@@ -19,7 +20,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   void _onUserNameChanged(
     UserNameChangedEvent event,
     Emitter<LoginState> emit,
-  ) => emit(state.copyWith(username: event.username));
+  ) => 
+  emit(state.copyWith(username: event.username));
 
   void _onPasswordChanged(
     PasswordChangedEvent event,
@@ -63,6 +65,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           errorMessage: "Unexpected error occurred",
         ),
       );
+    }
+  }
+
+  @override
+  LoginState? fromJson(Map<String, dynamic> json) {
+    try {
+      return LoginState.fromJson(json);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(LoginState state) {
+    try {
+      return state.toJson();
+    } catch (_) {
+      return null;
     }
   }
 }
