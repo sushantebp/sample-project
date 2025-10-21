@@ -27,7 +27,6 @@ class LoginScreen extends StatelessWidget {
             Toaster.showError(message);
           } else if (state.loginStatus == LoginStatus.submitted) {
             Toaster.showSuccess("Login Successful");
-
             context.router.replace(const MainRoute());
           }
         },

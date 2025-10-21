@@ -28,22 +28,22 @@ class AppRouter extends RootStackRouter {
         AutoRoute(
           path: AppRoutePath.product,
           page: ProductsShellRoute.page,
-          children: [AutoRoute(page: ProductRoute.page)],
+          children: [AutoRoute(initial: true, page: ProductRoute.page)],
         ),
         AutoRoute(
           path: AppRoutePath.carts,
           page: CartsShellRoute.page,
-          children: [AutoRoute(page: CartsRoute.page)],
+          children: [AutoRoute(initial: true, page: CartsRoute.page)],
         ),
         AutoRoute(
           path: AppRoutePath.recipes,
           page: RecipesShellRoute.page,
-          children: [AutoRoute(page: RecipesRoute.page)],
+          children: [AutoRoute(initial: true, page: RecipesRoute.page)],
         ),
         AutoRoute(
           path: AppRoutePath.profile,
           page: ProfileShellRoute.page,
-          children: [AutoRoute(page: ProfileRoute.page)],
+          children: [AutoRoute(initial: true, page: ProfileRoute.page)],
         ),
       ],
     ),

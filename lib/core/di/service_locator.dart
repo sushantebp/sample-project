@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 
 import 'package:sample_project/core/core.dart';
+import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/presentation/presentation.dart';
 import 'package:sample_project/features/login/data/data.dart';
 import 'package:sample_project/features/login/presentation/presentation.dart';
 import 'package:sample_project/features/splash/presentation/presentation.dart';
@@ -8,7 +9,6 @@ import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/data/
 
 final GetIt sl = GetIt.instance;
 
-/// Registers all app dependencies
 Future<void> configureDependencies() async {
   // ---------- Services ----------
   sl.registerLazySingleton<NetworkService>(() => NetworkService());
@@ -23,8 +23,12 @@ Future<void> configureDependencies() async {
   );
 
   // ---------- State Management / Blocs ----------
-  sl.registerFactory<SplashBloc>(() => SplashBloc());
-  sl.registerFactory<LoginBloc>(
+  sl.registerFactory(() => SplashBloc());
+  sl.registerFactory(
     () => LoginBloc(loginRepository: sl<LoginRepositoryImpl>()),
   );
+  sl.registerFactory(
+    () => ProfileBloc(profileRepository: sl<ProfileRepositoryImpl>()),
+  );
+  sl.registerFactory(() => AppThemeModeCubit());
 }
