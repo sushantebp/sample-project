@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'package:sample_project/core/core.dart';
 import 'package:toastification/toastification.dart';
-import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/presentation/presentation.dart';
-import 'package:sample_project/features/login/presentation/bloc/login_bloc.dart';
 import 'package:sample_project/features/splash/presentation/presentation.dart';
+import 'package:sample_project/features/login/presentation/bloc/login_bloc.dart';
+import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/presentation/presentation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await PreferencesService.instance.init();
+  final stoage = await getApplicationDocumentsDirectory();
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(stoage.path),
+  );
   await configureDependencies();
   runApp(const SampleProjectApp());
 }

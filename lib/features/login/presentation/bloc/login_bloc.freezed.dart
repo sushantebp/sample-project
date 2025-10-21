@@ -11,6 +11,7 @@ part of 'login_bloc.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+
 /// @nodoc
 mixin _$LoginState {
 
@@ -21,6 +22,8 @@ mixin _$LoginState {
 @pragma('vm:prefer-inline')
 $LoginStateCopyWith<LoginState> get copyWith => _$LoginStateCopyWithImpl<LoginState>(this as LoginState, _$identity);
 
+  /// Serializes this LoginState to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -28,7 +31,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is LoginState&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.loginStatus, loginStatus) || other.loginStatus == loginStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,username,password,loginStatus,errorMessage);
 
@@ -206,11 +209,11 @@ return $default(_that.username,_that.password,_that.loginStatus,_that.errorMessa
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _LoginState implements LoginState {
   const _LoginState({this.username = "", this.password = "", this.loginStatus = LoginStatus.initial, this.errorMessage});
-  
+  factory _LoginState.fromJson(Map<String, dynamic> json) => _$LoginStateFromJson(json);
 
 @override@JsonKey() final  String username;
 @override@JsonKey() final  String password;
@@ -223,14 +226,17 @@ class _LoginState implements LoginState {
 @pragma('vm:prefer-inline')
 _$LoginStateCopyWith<_LoginState> get copyWith => __$LoginStateCopyWithImpl<_LoginState>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$LoginStateToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _LoginState&&(identical(other.username, username) || other.username == username)&&(identical(other.password, password) || other.password == password)&&(identical(other.loginStatus, loginStatus) || other.loginStatus == loginStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,username,password,loginStatus,errorMessage);
 

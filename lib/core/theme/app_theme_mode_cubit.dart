@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:sample_project/core/core.dart';
 
+
 class AppThemeModeCubit extends Cubit<ThemeMode> {
   AppThemeModeCubit() : super(ThemeMode.system) {
     _loadTheme();
