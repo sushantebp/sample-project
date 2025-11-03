@@ -31,11 +31,6 @@ class LoginScreen extends StatelessWidget {
           }
         },
         builder: (context, state) {
-          final status = state.loginStatus;
-          if (status == LoginStatus.loading) {
-            return const Center(child: CircularProgressIndicator.adaptive());
-          }
-
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSize.paddingMedium),
             child: Form(
@@ -84,11 +79,14 @@ class LoginScreen extends StatelessWidget {
                     height: AppSize.spaceLarge * 2.2,
                     child: CustomButton(
                       title: "Login",
-                      onPressed: () {
-                        if (formKey.currentState?.validate() ?? false) {
-                          loginBloc.add(LoginSubmittedEvent());
-                        }
-                      },
+                      isLoading: state.loginStatus == LoginStatus.loading,
+                      onPressed: state.loginStatus == LoginStatus.loading
+                          ? null
+                          : () {
+                              if (formKey.currentState?.validate() ?? false) {
+                                loginBloc.add(LoginSubmittedEvent());
+                              }
+                            },
                     ),
                   ),
                 ],

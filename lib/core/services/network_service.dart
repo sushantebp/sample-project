@@ -5,7 +5,7 @@ import 'package:sample_project/features/login/data/models/mapping/token_entity_m
 
 class NetworkService {
   NetworkService._() {
-    dio.interceptors.add(_authInterceptor());
+    dio.interceptors.add(_interceptorsWrapper());
   }
 
   static final NetworkService _instance = NetworkService._();
@@ -18,69 +18,54 @@ class NetworkService {
     ),
   );
 
-  AppException _handleDioError(DioException error) {
-    final statusCode = error.response?.statusCode ?? 500;
-
-    switch (statusCode) {
-      case 500:
-        return const ServerException();
-      case 400:
-        return const BadRequestException();
-      case 401:
-        return UnauthorizedException();
-      default:
-        final errorMessage =
-            error.response?.data['message'] ??
-            "Unexcepted server error : $statusCode";
-        return UnknownnException(errorMessage);
-    }
-  }
-
-  InterceptorsWrapper _authInterceptor() {
+  InterceptorsWrapper _interceptorsWrapper() {
     return InterceptorsWrapper(
       onRequest: (options, handler) async {
         try {
-          final token = await getAccessToken();
-          if (token != null && token.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $token';
+          final accessToken = await getAccessToken();
+          if (accessToken != null && accessToken.isNotEmpty) {
+            options.headers['Authorization'] = 'Bearer $accessToken';
           }
-        } catch (e) {
-          throw AccessTokenException(e.toString());
+        } on DioException catch (error) {
+          final dioException = DioAppException.fromDioError(error);
+          handler.reject(dioException.dioError);
+        } catch (error) {
+          handler.reject(DioException(requestOptions: options, error: error));
         }
         handler.next(options);
       },
-      onResponse: (response, handler) {
-        handler.next(response);
-      },
+      onResponse: (response, handler) => handler.next(response),
       onError: (DioException error, handler) async {
-        if (error.response?.statusCode == 401) {
-          // 403 for referesh
-          final refreshed = await _refreshToken();
+        final dioException = DioAppException.fromDioError(error);
+        final statusCode = dioException.statusCode;
 
+        if (statusCode == 401) {
+          // Handle token refresh
+          final refreshed = await _refreshToken();
           if (refreshed) {
-            final requestOptions = error.requestOptions;
+            final options = error.requestOptions;
             final newToken = await getAccessToken();
 
             if (newToken != null) {
-              requestOptions.headers['Authorization'] = 'Bearer $newToken';
+              options.headers['Authorization'] = 'Bearer $newToken';
             }
+
+            // Make the request again with new token
             try {
-              final response = await dio.fetch(requestOptions);
+              final response = await dio.fetch(options);
               return handler.resolve(response);
             } catch (e) {
-              return handler.reject(error);
+              return handler.reject(dioException.dioError);
             }
+          } else {
+            return handler.reject(dioException.dioError);
           }
+        } else if (statusCode == 403) {
+          // Forbidden, handle accordingly (e.g., show alert)
+          return handler.reject(dioException.dioError);
+        } else {
+          return handler.reject(dioException.dioError);
         }
-        final customException = _handleDioError(error);
-        return handler.reject(
-          DioException(
-            requestOptions: error.requestOptions,
-            error: customException,
-            type: error.type,
-            response: error.response,
-          ),
-        );
       },
     );
   }

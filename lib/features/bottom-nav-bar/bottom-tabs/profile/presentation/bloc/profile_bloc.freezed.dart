@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileState {
 
- UserEntity get userEntity; ProfileStatus get profileStatus;
+ UserEntity get userEntity; ProfileStatus get profileStatus; String? get errorMessage;
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ProfileStateCopyWith<ProfileState> get copyWith => _$ProfileStateCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity)&&(identical(other.profileStatus, profileStatus) || other.profileStatus == profileStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileState&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity)&&(identical(other.profileStatus, profileStatus) || other.profileStatus == profileStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userEntity,profileStatus);
+int get hashCode => Object.hash(runtimeType,userEntity,profileStatus,errorMessage);
 
 @override
 String toString() {
-  return 'ProfileState(userEntity: $userEntity, profileStatus: $profileStatus)';
+  return 'ProfileState(userEntity: $userEntity, profileStatus: $profileStatus, errorMessage: $errorMessage)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ProfileStateCopyWith<$Res>  {
   factory $ProfileStateCopyWith(ProfileState value, $Res Function(ProfileState) _then) = _$ProfileStateCopyWithImpl;
 @useResult
 $Res call({
- UserEntity userEntity, ProfileStatus profileStatus
+ UserEntity userEntity, ProfileStatus profileStatus, String? errorMessage
 });
 
 
@@ -62,11 +62,12 @@ class _$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? userEntity = null,Object? profileStatus = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userEntity = null,Object? profileStatus = null,Object? errorMessage = freezed,}) {
   return _then(_self.copyWith(
 userEntity: null == userEntity ? _self.userEntity : userEntity // ignore: cast_nullable_to_non_nullable
 as UserEntity,profileStatus: null == profileStatus ? _self.profileStatus : profileStatus // ignore: cast_nullable_to_non_nullable
-as ProfileStatus,
+as ProfileStatus,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -151,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserEntity userEntity,  ProfileStatus profileStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserEntity userEntity,  ProfileStatus profileStatus,  String? errorMessage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.userEntity,_that.profileStatus);case _:
+return $default(_that.userEntity,_that.profileStatus,_that.errorMessage);case _:
   return orElse();
 
 }
@@ -172,10 +173,10 @@ return $default(_that.userEntity,_that.profileStatus);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserEntity userEntity,  ProfileStatus profileStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserEntity userEntity,  ProfileStatus profileStatus,  String? errorMessage)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState():
-return $default(_that.userEntity,_that.profileStatus);case _:
+return $default(_that.userEntity,_that.profileStatus,_that.errorMessage);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +193,10 @@ return $default(_that.userEntity,_that.profileStatus);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserEntity userEntity,  ProfileStatus profileStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserEntity userEntity,  ProfileStatus profileStatus,  String? errorMessage)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileState() when $default != null:
-return $default(_that.userEntity,_that.profileStatus);case _:
+return $default(_that.userEntity,_that.profileStatus,_that.errorMessage);case _:
   return null;
 
 }
@@ -207,11 +208,12 @@ return $default(_that.userEntity,_that.profileStatus);case _:
 
 
 class _ProfileState implements ProfileState {
-  const _ProfileState({this.userEntity = _emptyUser, this.profileStatus = ProfileStatus.initial});
+  const _ProfileState({this.userEntity = _emptyUser, this.profileStatus = ProfileStatus.initial, this.errorMessage});
   
 
 @override@JsonKey() final  UserEntity userEntity;
 @override@JsonKey() final  ProfileStatus profileStatus;
+@override final  String? errorMessage;
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +225,16 @@ _$ProfileStateCopyWith<_ProfileState> get copyWith => __$ProfileStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity)&&(identical(other.profileStatus, profileStatus) || other.profileStatus == profileStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileState&&(identical(other.userEntity, userEntity) || other.userEntity == userEntity)&&(identical(other.profileStatus, profileStatus) || other.profileStatus == profileStatus)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userEntity,profileStatus);
+int get hashCode => Object.hash(runtimeType,userEntity,profileStatus,errorMessage);
 
 @override
 String toString() {
-  return 'ProfileState(userEntity: $userEntity, profileStatus: $profileStatus)';
+  return 'ProfileState(userEntity: $userEntity, profileStatus: $profileStatus, errorMessage: $errorMessage)';
 }
 
 
@@ -243,7 +245,7 @@ abstract mixin class _$ProfileStateCopyWith<$Res> implements $ProfileStateCopyWi
   factory _$ProfileStateCopyWith(_ProfileState value, $Res Function(_ProfileState) _then) = __$ProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- UserEntity userEntity, ProfileStatus profileStatus
+ UserEntity userEntity, ProfileStatus profileStatus, String? errorMessage
 });
 
 
@@ -260,11 +262,12 @@ class __$ProfileStateCopyWithImpl<$Res>
 
 /// Create a copy of ProfileState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? userEntity = null,Object? profileStatus = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userEntity = null,Object? profileStatus = null,Object? errorMessage = freezed,}) {
   return _then(_ProfileState(
 userEntity: null == userEntity ? _self.userEntity : userEntity // ignore: cast_nullable_to_non_nullable
 as UserEntity,profileStatus: null == profileStatus ? _self.profileStatus : profileStatus // ignore: cast_nullable_to_non_nullable
-as ProfileStatus,
+as ProfileStatus,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
