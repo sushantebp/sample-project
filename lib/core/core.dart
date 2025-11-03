@@ -2,7 +2,6 @@
 export './constants/api_end_point.dart';
 export './constants/app_constant.dart';
 export './constants/app_image.dart';
-export './constants/app_exception.dart';
 export './constants/app_size.dart';
 export './extensions/build_context_extension.dart';
 export './helpers/token_helper.dart';
@@ -27,3 +26,8 @@ export './constants/app_color.dart';
 
 // Dependency Injection - Service locator setup
 export './di/service_locator.dart';
+
+export './exceptions/dio_app_exception.dart';
+export 'exceptions/app_exception.dart';
+
+export './types/result_type.dart';

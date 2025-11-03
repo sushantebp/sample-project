@@ -18,22 +18,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     emit(state.copyWith(profileStatus: ProfileStatus.fetching));
-    try {
-      final userProfile = await profileRepository.fetchUserDetails();
 
-      if (userProfile.id != 0) {
+    final result = await profileRepository.fetchUserDetails();
+    result.fold(
+      (failure) => emit(
+        state.copyWith(
+          profileStatus: ProfileStatus.failed,
+          errorMessage: failure.message,
+        ),
+      ),
+      (profileEntities) {
         emit(
           state.copyWith(
-            userEntity: userProfile,
+            errorMessage: null,
             profileStatus: ProfileStatus.fetched,
+            userEntity: profileEntities,
           ),
         );
-      } else {
-        emit(state.copyWith(profileStatus: ProfileStatus.failed));
-      }
-    } catch (e) {
-      emit(state.copyWith(profileStatus: ProfileStatus.failed));
-    }
+      },
+    );
   }
 
   Future<void> _onLogout(

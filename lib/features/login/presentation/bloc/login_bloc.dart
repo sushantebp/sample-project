@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/domain/domain.dart';
 
 part 'login_event.dart';
@@ -20,8 +19,7 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
   void _onUserNameChanged(
     UserNameChangedEvent event,
     Emitter<LoginState> emit,
-  ) => 
-  emit(state.copyWith(username: event.username));
+  ) => emit(state.copyWith(username: event.username));
 
   void _onPasswordChanged(
     PasswordChangedEvent event,
@@ -33,39 +31,26 @@ class LoginBloc extends HydratedBloc<LoginEvent, LoginState> {
     Emitter<LoginState> emit,
   ) async {
     emit(state.copyWith(loginStatus: LoginStatus.loading));
-    try {
-      final loginRequest = LoginRequestEntity(
-        username: state.username,
-        password: state.password,
-      );
-      await loginRepository.login(loginRequest);
-      emit(
-        state.copyWith(loginStatus: LoginStatus.submitted, errorMessage: null),
-      );
-    } on AppException catch (e) {
-      String customMessage;
-      if (e is BadRequestException) {
-        customMessage = e.message;
-      } else if (e is ServerException) {
-        customMessage = e.message;
-      } else {
-        customMessage = e.message;
-      }
 
-      emit(
+    await Future.delayed(const Duration(seconds: 2));
+
+    LoginRequestEntity loginRequest = LoginRequestEntity(
+      username: state.username,
+      password: state.password,
+    );
+    final result = await loginRepository.login(loginRequest);
+
+    result.fold(
+      (failure) => emit(
         state.copyWith(
           loginStatus: LoginStatus.failed,
-          errorMessage: customMessage,
+          errorMessage: failure.message,
         ),
-      );
-    } catch (_) {
-      emit(
-        state.copyWith(
-          loginStatus: LoginStatus.failed,
-          errorMessage: "Unexpected error occurred",
-        ),
-      );
-    }
+      ),
+      (_) => emit(
+        state.copyWith(loginStatus: LoginStatus.submitted, errorMessage: null),
+      ),
+    );
   }
 
   @override

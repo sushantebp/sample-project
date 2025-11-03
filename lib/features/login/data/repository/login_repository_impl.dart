@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/login/data/data.dart';
 import 'package:sample_project/features/login/domain/domain.dart';
@@ -7,7 +8,9 @@ class LoginRepositoryImpl extends LoginRepository {
   final NetworkService _networkService;
   LoginRepositoryImpl(this._networkService);
   @override
-  Future<void> login(LoginRequestEntity loginRequest) async {
+  Future<Result<LoginResponseEntity>> login(
+    LoginRequestEntity loginRequest,
+  ) async {
     try {
       final loginRequestModel = loginRequest.toModel();
       final jsonBody = loginRequestModel.toJson();
@@ -26,16 +29,15 @@ class LoginRepositoryImpl extends LoginRepository {
 
         await setAccessToken(loginResponseEntity.accessToken);
         await setRefreshToken(loginResponseEntity.refreshToken);
-      }
-    } on DioException catch (e) {
-      final error = e.error;
-      if (error is AppException) {
-        throw error;
+        return Right(loginResponseEntity);
       } else {
-        throw const NetworkException("Unexpected network error");
+        return Left(ApiException(statusCode, "Login failed."));
       }
-    } catch (e) {
-      throw Exception("hmm something is wrong");
+    } on DioException catch (error) {
+      final dioAppException = DioAppException.fromDioError(error);
+      return Left(dioAppException);
+    } catch (error) {
+      throw UnknownnException('Something went wrong : $error');
     }
   }
 }

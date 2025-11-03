@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:sample_project/core/core.dart';
 import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/data/data.dart';
 import 'package:sample_project/features/bottom-nav-bar/bottom-tabs/profile/domain/domain.dart';
@@ -6,7 +8,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
   final NetworkService networkService;
   ProfileRepositoryImpl(this.networkService);
   @override
-  Future<UserEntity> fetchUserDetails() async {
+  Future<Result<UserEntity>> fetchUserDetails() async {
     try {
       final response = await networkService.dio.get(ApiEndPoint.authUser);
 
@@ -16,12 +18,16 @@ class ProfileRepositoryImpl extends ProfileRepository {
         final userModel = UserModel.fromJson(data);
         final userEntity = userModel.toEntity();
 
-        return userEntity;
+        return Right(userEntity);
       } else {
-        throw const UserFetchException();
+        String message = response.data["message"] ?? "Failed to fetch data";
+        return Left(ApiException(response.statusCode, message));
       }
-    } catch (e) {
-      throw UserFetchException("Error occurred : ${e.toString()}");
+    } on DioException catch (error) {
+      final dioExcept = DioAppException.fromDioError(error);
+      return Left(dioExcept);
+    } catch (error) {
+      throw UnknownnException('Something went wrong : $error');
     }
   }
 

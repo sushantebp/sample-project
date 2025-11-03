@@ -7,6 +7,7 @@ abstract class ProfileState with _$ProfileState {
   const factory ProfileState({
     @Default(_emptyUser) UserEntity userEntity,
     @Default(ProfileStatus.initial) ProfileStatus profileStatus,
+    String? errorMessage,
   }) = _ProfileState;
 }
 
